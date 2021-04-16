@@ -12,7 +12,7 @@ import SessionModel from "../session/session.model";
 import BookModel from "../book/book.model";
 import PlanningModel from "./planning.model";
 
-describe("Book router test suite", () => {
+describe("Planning router test suite", () => {
   let app: Application;
   let createdUser: IUser | IUserPopulated | null;
   let createdPlanning: IPlanning | null;
@@ -51,7 +51,6 @@ describe("Book router test suite", () => {
   afterAll(async () => {
     await UserModel.deleteOne({ email: "test@email.com" });
     await SessionModel.deleteOne({ _id: response.body.sid });
-    await BookModel.deleteOne({ _id: createdBook.body._id });
     await mongoose.connection.close();
   });
 
@@ -193,7 +192,6 @@ describe("Book router test suite", () => {
         createdPlanning = await PlanningModel.findById(
           response.body.planning._id
         );
-        console.log(createdPlanning?.toObject());
       });
 
       it("Should return a 200 status code", () => {
@@ -280,6 +278,11 @@ describe("Book router test suite", () => {
 
   describe("GET /planning", () => {
     let response: Response;
+
+    afterAll(async () => {
+      await PlanningModel.deleteOne({ _id: createdPlanning?._id });
+      await BookModel.deleteOne({ _id: createdBook.body.newBook._id });
+    });
 
     it("Init endpoint testing", () => {
       expect(true).toBe(true);

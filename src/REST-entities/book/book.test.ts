@@ -9,6 +9,7 @@ import {
 import Server from "../../server/server";
 import UserModel from "../user/user.model";
 import SessionModel from "../session/session.model";
+import BookModel from "./book.model";
 
 describe("Book router test suite", () => {
   let app: Application;
@@ -163,6 +164,10 @@ describe("Book router test suite", () => {
       rating: 6,
       feedback: "Test",
     };
+
+    afterAll(async () => {
+      await BookModel.deleteOne({ _id: createdBook?._id });
+    });
 
     it("Init endpoint testing", () => {
       expect(true).toBe(true);
