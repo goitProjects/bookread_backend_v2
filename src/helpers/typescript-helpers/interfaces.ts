@@ -2,6 +2,7 @@ import { Document } from "mongoose";
 import { MongoDBObjectId } from "./types";
 
 export interface IUser extends Document {
+  name: string;
   email: string;
   originUrl: string;
   books: MongoDBObjectId[];
@@ -10,6 +11,7 @@ export interface IUser extends Document {
 }
 
 export interface IUserPopulated extends Document {
+  name: string;
   email: string;
   originUrl: string;
   books: IBook[];

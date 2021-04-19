@@ -31,7 +31,7 @@ describe("Planning router test suite", () => {
     });
     await supertest(app)
       .post("/auth/register")
-      .send({ email: "test@email.com", password: "qwerty123" });
+      .send({ name: "Test", email: "test@email.com", password: "qwerty123" });
     response = await supertest(app)
       .post("/auth/login")
       .send({ email: "test@email.com", password: "qwerty123" });
@@ -59,13 +59,13 @@ describe("Planning router test suite", () => {
 
     const validReqBody = {
       startDate: "2020-12-31",
-      endDate: "2021-01-05",
+      endDate: "2025-04-05",
       books: [],
     };
 
     const invalidReqBody = {
       startDate: "2020-12-31",
-      endDate: "2020-13-31",
+      endDate: "2025-13-05",
       books: [],
     };
 
@@ -90,7 +90,6 @@ describe("Planning router test suite", () => {
       it("Should return an expected result", () => {
         expect(response.body).toEqual({
           startDate: "2020-12-31",
-          endDate: "2021-01-05",
           books: [
             {
               title: "Test",
@@ -102,8 +101,9 @@ describe("Planning router test suite", () => {
               _id: createdBook.body.newBook._id,
             },
           ],
-          duration: 5,
-          pagesPerDay: 2,
+          duration: 1556,
+          endDate: "2025-04-05",
+          pagesPerDay: 1,
           stats: [],
           _id: response.body._id,
         });
@@ -116,7 +116,7 @@ describe("Planning router test suite", () => {
       });
     });
 
-    context("With invalidReqBody ('totalPages' is lower than 1)", () => {
+    context("With invalidReqBody ('endDate' is invalid)", () => {
       beforeAll(async () => {
         invalidReqBody.books.push(createdBook.body.newBook._id as never);
         response = await supertest(app)
@@ -211,10 +211,10 @@ describe("Planning router test suite", () => {
           },
           planning: {
             startDate: "2020-12-31",
-            endDate: "2021-01-05",
             books: [createdBook.body.newBook._id],
-            duration: 5,
-            pagesPerDay: 2,
+            duration: 1556,
+            endDate: "2025-04-05",
+            pagesPerDay: 1,
             stats: [
               { time: response.body.planning.stats[0].time, pagesCount: 10 },
             ],
@@ -303,7 +303,6 @@ describe("Planning router test suite", () => {
         expect(response.body).toEqual({
           planning: {
             startDate: "2020-12-31",
-            endDate: "2021-01-05",
             books: [
               {
                 __v: 0,
@@ -315,8 +314,9 @@ describe("Planning router test suite", () => {
                 title: "Test",
               },
             ],
-            duration: 5,
-            pagesPerDay: 2,
+            duration: 1556,
+            endDate: "2025-04-05",
+            pagesPerDay: 1,
             stats: [
               { time: response.body.planning.stats[0].time, pagesCount: 10 },
             ],

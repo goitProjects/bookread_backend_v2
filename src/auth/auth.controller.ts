@@ -13,7 +13,7 @@ import UserModel from "../REST-entities/user/user.model";
 import SessionModel from "../REST-entities/session/session.model";
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
   const existingUser = await UserModel.findOne({ email });
   if (existingUser) {
     return res
@@ -25,12 +25,14 @@ export const register = async (req: Request, res: Response) => {
     Number(process.env.HASH_POWER)
   );
   const newUser = await UserModel.create({
+    name,
     email,
     passwordHash,
     originUrl: req.headers.origin as string,
     books: [],
   });
   return res.status(201).send({
+    name,
     email,
     id: newUser._id,
   });
@@ -94,6 +96,7 @@ export const login = async (
         refreshToken,
         sid: newSession._id,
         userData: {
+          name: data?.name,
           email: data?.email,
           goingToRead,
           currentlyReading,

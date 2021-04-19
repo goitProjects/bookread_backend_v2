@@ -39,12 +39,14 @@ describe("Auth router test suite", () => {
     let createdUser: IUser | IUserPopulated | null;
 
     const validReqBody = {
+      name: "Test",
       email: "test@email.com",
       password: "qwerty123",
     };
 
     const invalidReqBody = {
       email: "test@email.com",
+      password: "qwerty123",
     };
 
     it("Init endpoint testing", () => {
@@ -65,6 +67,7 @@ describe("Auth router test suite", () => {
 
       it("Should return an expected result", () => {
         expect(response.body).toEqual({
+          name: "Test",
           email: validReqBody.email,
           id: (createdUser as IUser)._id.toString(),
         });
@@ -93,7 +96,7 @@ describe("Auth router test suite", () => {
       });
     });
 
-    context("With invalidReqBody (no 'password' provided)", () => {
+    context("With invalidReqBody (no 'name' provided)", () => {
       beforeAll(async () => {
         response = await supertest(app)
           .post("/auth/register")
@@ -104,8 +107,8 @@ describe("Auth router test suite", () => {
         expect(response.status).toBe(400);
       });
 
-      it("Should say that 'username' is required", () => {
-        expect(response.body.message).toBe('"password" is required');
+      it("Should say that 'name' is required", () => {
+        expect(response.body.message).toBe('"name" is required');
       });
     });
   });
@@ -157,6 +160,7 @@ describe("Auth router test suite", () => {
           refreshToken,
           sid,
           userData: {
+            name: "Test",
             email: validReqBody.email,
             goingToRead: [],
             currentlyReading: [],

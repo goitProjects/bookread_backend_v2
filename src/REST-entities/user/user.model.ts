@@ -5,6 +5,7 @@ import {
 } from "../../helpers/typescript-helpers/interfaces";
 
 const userSchema = new Schema({
+  name: String,
   email: String,
   passwordHash: String,
   originUrl: String,

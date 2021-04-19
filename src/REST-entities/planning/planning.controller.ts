@@ -20,7 +20,7 @@ export const startPlanning = async (req: Request, res: Response) => {
     Number(endDateArr[2])
   );
   const duration = endDateObj.diff(startDateObj, "days").toObject().days;
-  if (!duration) {
+  if (!duration || duration < 1) {
     return res.status(400).send({ message: "Invalid dates" });
   }
   let totalPages = 0;
@@ -29,6 +29,12 @@ export const startPlanning = async (req: Request, res: Response) => {
     const book = await BookModel.findOne({ _id: books[i] });
     if (!book || !user?.books.includes(book?._id)) {
       return res.status(400).send({ message: "Invalid 'bookId'" });
+    }
+    if (book.pagesFinished !== 0) {
+      return res.status(400).send({
+        message:
+          "Invalid 'bookId', you can't add books that you've already read/reading",
+      });
     }
     totalPages += book.pagesTotal;
     booksPopulated.push(book);
@@ -100,7 +106,7 @@ export const getPlanning = async (
     _id: user?.planning,
   })
     .populate("books")
-    .exec((err, data) => {
+    .exec(async (err, data) => {
       if (err) {
         next(err);
       }
@@ -108,6 +114,30 @@ export const getPlanning = async (
         return res
           .status(403)
           .send({ message: "You should start planning first" });
+      }
+      const time = DateTime.now()
+        .setZone("Europe/Kiev")
+        .toFormat("yyyy-MM-dd")
+        .split("-");
+      const endDateObj = data.endDate.split("-");
+      const dateNow = DateTime.local(
+        Number(time[0]),
+        Number(time[1]),
+        Number(time[2])
+      );
+      const endDate = DateTime.local(
+        Number(endDateObj[0]),
+        Number(endDateObj[1]),
+        Number(endDateObj[2])
+      );
+      const diff = endDate.diff(dateNow, "days").toObject().days;
+      if (!diff || diff < 1) {
+        await PlanningModel.deleteOne({ _id: req.user.planning });
+        req.user.planning = null;
+        await (req.user as IUser).save();
+        return res
+          .status(403)
+          .send({ message: "Your planning has already ended" });
       }
       return res.status(200).send({ planning: data });
     });

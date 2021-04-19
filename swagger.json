@@ -440,9 +440,14 @@
   "components": {
     "schemas": {
       "RegistrationRequest": {
-        "required": ["email", "password"],
+        "required": ["name", "email", "password"],
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Test"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
@@ -507,6 +512,11 @@
           "userData": {
             "type": "object",
             "properties": {
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Test"
+              },
               "email": {
                 "type": "string",
                 "description": "User's email",
@@ -1150,6 +1160,11 @@
       "GetBooks&Email": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Test"
+          },
           "email": {
             "type": "string",
             "description": "User's email",

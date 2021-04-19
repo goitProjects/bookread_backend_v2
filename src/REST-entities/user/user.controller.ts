@@ -23,6 +23,7 @@ export const getBooksInfo = async (
         (book) => book.pagesFinished === book.pagesTotal
       );
       return res.status(200).send({
+        name: data?.name,
         email: data?.email,
         goingToRead,
         currentlyReading,

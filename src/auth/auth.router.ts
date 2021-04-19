@@ -13,7 +13,13 @@ import {
   authorize,
 } from "../auth/auth.controller";
 
-const signUpInSchema = Joi.object({
+const signUpSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().required(),
+  password: Joi.string().required(),
+});
+
+const signInSchema = Joi.object({
   email: Joi.string().required(),
   password: Joi.string().required(),
 });
@@ -34,8 +40,8 @@ const refreshTokensSchema = Joi.object({
 
 const router = Router();
 
-router.post("/register", validate(signUpInSchema), tryCatchWrapper(register));
-router.post("/login", validate(signUpInSchema), tryCatchWrapper(login));
+router.post("/register", validate(signUpSchema), tryCatchWrapper(register));
+router.post("/login", validate(signInSchema), tryCatchWrapper(login));
 router.post("/logout", tryCatchWrapper(authorize), tryCatchWrapper(logout));
 router.post(
   "/refresh",

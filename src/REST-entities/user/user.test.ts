@@ -21,7 +21,7 @@ describe("User router test suite", () => {
     });
     await supertest(app)
       .post("/auth/register")
-      .send({ email: "test@email.com", password: "qwerty123" });
+      .send({ name: "Test", email: "test@email.com", password: "qwerty123" });
     response = await supertest(app)
       .post("/auth/login")
       .send({ email: "test@email.com", password: "qwerty123" });
@@ -54,6 +54,7 @@ describe("User router test suite", () => {
 
       it("Should return an expected result", () => {
         expect(response.body).toEqual({
+          name: "Test",
           email: "test@email.com",
           goingToRead: [],
           currentlyReading: [],

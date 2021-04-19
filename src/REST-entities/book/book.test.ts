@@ -29,7 +29,7 @@ describe("Book router test suite", () => {
     });
     await supertest(app)
       .post("/auth/register")
-      .send({ email: "test@email.com", password: "qwerty123" });
+      .send({ name: "Test", email: "test@email.com", password: "qwerty123" });
     response = await supertest(app)
       .post("/auth/login")
       .send({ email: "test@email.com", password: "qwerty123" });
