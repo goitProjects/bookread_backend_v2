@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import { DateTime } from "luxon";
 import PlanningModel from "./planning.model";
 import BookModel from "../book/book.model";
-import { IUser, IBook } from "../../helpers/typescript-helpers/interfaces";
+import {
+  IUser,
+  IPlanningPopulated,
+  IBook,
+} from "../../helpers/typescript-helpers/interfaces";
 
 export const startPlanning = async (req: Request, res: Response) => {
   const { startDate, endDate, books } = req.body;
@@ -68,14 +72,35 @@ export const addReadPages = async (req: Request, res: Response) => {
     return res.status(403).send({ message: "You must start a planning first" });
   }
   let book: IBook | null = null;
+  let diff = 0;
+  let currentIteration = 0;
   for (let i = 0; i < planning.books.length; i++) {
+    currentIteration = i;
     book = await BookModel.findOne({ _id: planning.books[i] });
     if (book?.pagesTotal === book?.pagesFinished) {
       continue;
     }
     (book as IBook).pagesFinished += pages;
     if ((book as IBook).pagesFinished > (book as IBook).pagesTotal) {
+      diff = (book as IBook).pagesFinished - (book as IBook).pagesTotal;
       (book as IBook).pagesFinished = (book as IBook).pagesTotal;
+      while (diff !== 0) {
+        currentIteration++;
+        const nextBook = await BookModel.findOne({
+          _id: planning.books[currentIteration],
+        });
+        (nextBook as IBook).pagesFinished += diff;
+        if (
+          (nextBook as IBook).pagesFinished > (nextBook as IBook).pagesTotal
+        ) {
+          diff =
+            (nextBook as IBook).pagesFinished - (nextBook as IBook).pagesTotal;
+          (nextBook as IBook).pagesFinished = (nextBook as IBook).pagesTotal;
+          await (nextBook as IBook).save();
+        } else {
+          diff = 0;
+        }
+      }
     }
     await (book as IBook).save();
     break;
@@ -131,7 +156,14 @@ export const getPlanning = async (
         Number(endDateObj[2])
       );
       const diff = endDate.diff(dateNow, "days").toObject().days;
-      if (!diff || diff < 1) {
+      const results = [];
+      if (
+        (data as IPlanningPopulated).books.every(
+          (item) => item.pagesTotal === item.pagesFinished
+        ) ||
+        !diff ||
+        diff < 1
+      ) {
         await PlanningModel.deleteOne({ _id: req.user.planning });
         req.user.planning = null;
         await (req.user as IUser).save();

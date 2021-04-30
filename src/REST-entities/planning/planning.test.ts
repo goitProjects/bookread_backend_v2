@@ -5,6 +5,7 @@ import {
   IUser,
   IUserPopulated,
   IPlanning,
+  IPlanningPopulated,
 } from "../../helpers/typescript-helpers/interfaces";
 import Server from "../../server/server";
 import UserModel from "../user/user.model";
@@ -15,7 +16,7 @@ import PlanningModel from "./planning.model";
 describe("Planning router test suite", () => {
   let app: Application;
   let createdUser: IUser | IUserPopulated | null;
-  let createdPlanning: IPlanning | null;
+  let createdPlanning: IPlanning | IPlanningPopulated | null;
   let createdBook: Response;
   let accessToken: string;
   let response: Response;
@@ -172,7 +173,7 @@ describe("Planning router test suite", () => {
     let response: Response;
 
     const validReqBody = {
-      pages: 10,
+      pages: 9,
     };
 
     const invalidReqBody = {
@@ -205,7 +206,7 @@ describe("Planning router test suite", () => {
             author: "Test",
             publishYear: 2020,
             pagesTotal: 10,
-            pagesFinished: 10,
+            pagesFinished: 9,
             __v: 0,
             _id: createdBook.body.newBook._id,
           },
@@ -216,7 +217,7 @@ describe("Planning router test suite", () => {
             endDate: "2025-04-05",
             pagesPerDay: 1,
             stats: [
-              { time: response.body.planning.stats[0].time, pagesCount: 10 },
+              { time: response.body.planning.stats[0].time, pagesCount: 9 },
             ],
             _id: response.body.planning._id,
             __v: 1,
@@ -308,7 +309,7 @@ describe("Planning router test suite", () => {
                 __v: 0,
                 _id: createdBook.body.newBook._id,
                 author: "Test",
-                pagesFinished: 10,
+                pagesFinished: 9,
                 pagesTotal: 10,
                 publishYear: 2020,
                 title: "Test",
@@ -318,7 +319,7 @@ describe("Planning router test suite", () => {
             endDate: "2025-04-05",
             pagesPerDay: 1,
             stats: [
-              { time: response.body.planning.stats[0].time, pagesCount: 10 },
+              { time: response.body.planning.stats[0].time, pagesCount: 9 },
             ],
             _id: response.body.planning._id,
             __v: 1,

@@ -38,6 +38,15 @@ export interface IPlanning extends Document {
   stats: { time: string; pagesCount: number }[];
 }
 
+export interface IPlanningPopulated extends Document {
+  startDate: string;
+  endDate: string;
+  books: IBook[];
+  pagesPerDay: number;
+  duration: number;
+  stats: { time: string; pagesCount: number }[];
+}
+
 export interface ISession extends Document {
   uid: string;
 }

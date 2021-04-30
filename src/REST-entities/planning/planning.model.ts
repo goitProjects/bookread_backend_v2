@@ -1,5 +1,8 @@
 import mongoose, { Schema } from "mongoose";
-import { IPlanning } from "../../helpers/typescript-helpers/interfaces";
+import {
+  IPlanning,
+  IPlanningPopulated,
+} from "../../helpers/typescript-helpers/interfaces";
 
 const planningSchema = new Schema({
   startDate: String,
@@ -10,4 +13,7 @@ const planningSchema = new Schema({
   stats: [{ time: String, pagesCount: Number, _id: false }],
 });
 
-export default mongoose.model<IPlanning>("Planning", planningSchema);
+export default mongoose.model<IPlanning | IPlanningPopulated>(
+  "Planning",
+  planningSchema
+);
