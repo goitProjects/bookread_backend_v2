@@ -11,7 +11,7 @@
   },
   "consumes": ["application/json"],
   "produces": ["application/json"],
-  "servers": [],
+  "servers": [{ "url": "https://bookread-backend.goit.global" }],
   "tags": [
     {
       "name": "Auth",
