@@ -1,4 +1,5 @@
 import { Router } from "express";
+import mongoose from "mongoose";
 import Joi from "joi";
 import tryCatchWrapper from "../../helpers/function-helpers/try-catch-wrapper";
 import validate from "../../helpers/function-helpers/validate";
@@ -28,18 +29,33 @@ const addBookReviewSchema = Joi.object({
   feedback: Joi.string().min(1).max(3000).required(),
 });
 
+const bookIdSchema = Joi.object({
+  bookId: Joi.string()
+    .custom((value, helpers) => {
+      const isValidObjectId = mongoose.Types.ObjectId.isValid(value);
+      if (!isValidObjectId) {
+        return helpers.message({
+          custom: "Invalid 'bookId'. Must be a MongoDB ObjectId",
+        });
+      }
+      return value;
+    })
+    .required(),
+});
+
 const router = Router();
 
 router.post(
   "/",
-  validate(addBookSchema),
   tryCatchWrapper(authorize),
+  validate(addBookSchema),
   tryCatchWrapper(addBook)
 );
 router.patch(
   "/review/:bookId",
-  validate(addBookReviewSchema),
   tryCatchWrapper(authorize),
+  validate(bookIdSchema, "params"),
+  validate(addBookReviewSchema),
   tryCatchWrapper(addReview)
 );
 
