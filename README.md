@@ -1,4 +1,4 @@
-# Kapusta Backend
+# BookRead Backend
 
 Общий бэкенд для запросов к студ. проектам от GoIT 'BookRead'
 [Документация бэкенда](https://bookread-backend.goit.global/api-docs/)
