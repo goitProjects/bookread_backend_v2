@@ -7,8 +7,8 @@ import { authorize } from "./../../auth/auth.controller";
 import { addBook, addReview } from "./book.controller";
 
 const addBookSchema = Joi.object({
-  title: Joi.string().required(),
-  author: Joi.string().required(),
+  title: Joi.string().min(1).max(254).required(),
+  author: Joi.string().min(2).max(254).required(),
   publishYear: Joi.number()
     .custom((value, helpers) => {
       const yearRegex = /[0-9]{4}/;

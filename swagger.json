@@ -235,7 +235,7 @@
         }
       }
     },
-    "/book/review/{bookId}": {
+    "/book/review": {
       "patch": {
         "tags": ["Book"],
         "summary": "Add book's review",
@@ -446,17 +446,23 @@
           "name": {
             "type": "string",
             "description": "User's name",
-            "example": "Test"
+            "example": "Test",
+            "minLength": 2,
+            "maxLength": 254
           },
           "email": {
             "type": "string",
             "description": "User's email",
-            "format": "email"
+            "format": "email",
+            "minLength": 2,
+            "maxLength": 254
           },
           "password": {
             "type": "string",
             "description": "User's password",
-            "example": "qwerty123"
+            "example": "qwerty123",
+            "minLength": 8,
+            "maxLength": 100
           }
         }
       },
@@ -482,12 +488,16 @@
           "email": {
             "type": "string",
             "description": "User's email",
-            "format": "email"
+            "format": "email",
+            "minLength": 2,
+            "maxLength": 254
           },
           "password": {
             "type": "string",
             "description": "User's password",
-            "example": "qwerty123"
+            "example": "qwerty123",
+            "minLength": 8,
+            "maxLength": 100
           }
         }
       },
@@ -699,12 +709,16 @@
           "title": {
             "type": "string",
             "example": "The Book of Five Rings",
-            "description": "Book's title"
+            "description": "Book's title",
+            "minLength": 1,
+            "maxLength": 254
           },
           "author": {
             "type": "string",
             "example": "Miyamoto Musashi",
-            "description": "Book's author"
+            "description": "Book's author",
+            "minLength": 2,
+            "maxLength": 254
           },
           "publishYear": {
             "type": "integer",
@@ -714,7 +728,9 @@
           "totalPages": {
             "type": "integer",
             "example": 110,
-            "description": "Book's total amount of pages"
+            "description": "Book's total amount of pages",
+            "minimum": 1,
+            "maximum": 5000
           }
         }
       },
@@ -771,7 +787,9 @@
           "feedback": {
             "type": "string",
             "example": "Really good book",
-            "description": "Book's feedback"
+            "description": "Book's feedback",
+            "minLegth": 1,
+            "maxLength": 3000
           }
         }
       },
