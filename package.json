@@ -9,9 +9,6 @@
     "postinstall": "tsc",
     "dev": "nodemon --files src/server/start.ts"
   },
-  "engines": {
-    "node": "12.18.0"
-  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
