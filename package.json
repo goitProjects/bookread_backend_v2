@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/server/start.js",
+    "start": "node --max_old_space_size=8048 dist/server/start.js",
     "test": "jest",
     "postinstall": "tsc",
     "dev": "nodemon --files src/server/start.ts"
