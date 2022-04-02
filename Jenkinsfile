@@ -50,9 +50,9 @@ node("all-biulds"){
 
         if (success) {
             catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                sh '''cp /root/keys/index.ts /root/slave_jenkins/workspace/Build-Bookread-Backend/src/gcp-config/index.ts'''
-                sh "cp /root/keys/keys.json /root/slave_jenkins/workspace/Build-Bookread-Backend/src/gcp-config/keys.json"
-                sh "cp /root/keys/bookread-backend/.env /root/slave_jenkins/workspace/Build-Bookread-Backend/.env"
+                sh '''cp /root/keys/index.ts /root/slave/workspace/Build-Bookread-Backend/src/gcp-config/index.ts'''
+                sh "cp /root/keys/keys.json /root/slave/workspace/Build-Bookread-Backend/src/gcp-config/keys.json"
+                sh "cp /root/keys/bookread-backend/.env /root/slave/workspace/Build-Bookread-Backend/.env"
             }
         }
     }
