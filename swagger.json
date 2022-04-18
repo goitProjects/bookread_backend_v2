@@ -725,7 +725,7 @@
             "example": 1643,
             "description": "Book's publish year"
           },
-          "totalPages": {
+          "pagesTotal": {
             "type": "integer",
             "example": 110,
             "description": "Book's total amount of pages",
@@ -737,6 +737,7 @@
       "AddBookResponse": {
         "type": "object",
         "properties": {
+"newBook": {
           "title": {
             "type": "string",
             "example": "The Book of Five Rings",
@@ -771,7 +772,7 @@
             "type": "integer",
             "description": "MongoDB document service versionKey (ignore)"
           }
-        }
+        }}
       },
       "BookReviewRequest": {
         "required": ["rating", "feedback"],
