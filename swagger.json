@@ -738,6 +738,8 @@
         "type": "object",
         "properties": {
 "newBook": {
+            "type": "object",
+            "properties": {
           "title": {
             "type": "string",
             "example": "The Book of Five Rings",
@@ -772,7 +774,7 @@
             "type": "integer",
             "description": "MongoDB document service versionKey (ignore)"
           }
-        }}
+          }}
       },
       "BookReviewRequest": {
         "required": ["rating", "feedback"],
