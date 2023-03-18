@@ -9,9 +9,11 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
-  "servers": [{ "url": "https://bookread-backend.goit.global" }],
+  "servers": [
+    {
+      "url": "https://bookread-backend.goit.global"
+    }
+  ],
   "tags": [
     {
       "name": "Auth",
@@ -33,7 +35,9 @@
   "paths": {
     "/auth/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "User registration",
         "parameters": [],
         "requestBody": {
@@ -71,7 +75,9 @@
     },
     "/auth/login": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "User authentication",
         "parameters": [],
         "requestBody": {
@@ -109,9 +115,15 @@
     },
     "/auth/logout": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Logout",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [],
         "responses": {
           "204": {
@@ -135,9 +147,15 @@
     },
     "/auth/refresh": {
       "post": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Get new pair of tokens (use Bearer {refreshToken} instead of accessToken)",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [],
         "requestBody": {
           "description": "Object with session's id",
@@ -178,7 +196,9 @@
     },
     "/auth/google": {
       "get": {
-        "tags": ["Auth"],
+        "tags": [
+          "Auth"
+        ],
         "summary": "Google authentication. WARNING: Works only for sign-in, after registered on front-end (if you're writing your back-end for a SPECIFIC front-end, then you can configure it right to work both for sign-up & sign-in)",
         "responses": {
           "200": {
@@ -194,9 +214,15 @@
     },
     "/book": {
       "post": {
-        "tags": ["Book"],
+        "tags": [
+          "Book"
+        ],
         "summary": "Add new book to library",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [],
         "requestBody": {
           "description": "Book's object",
@@ -235,18 +261,76 @@
         }
       }
     },
-    "/book/review": {
+    "/book/{bookId}": {
+      "delete": {
+        "tags": [
+          "Book"
+        ],
+        "summary": "del one book to library",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "bookId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "The Transaction ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBookRequest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid 'bookId', you can't delete book that you've already read/reading / Invalid 'bookId",
+            "content": {}
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          },
+          "500": {
+            "description": "Server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/book/review/{bookId}": {
       "patch": {
-        "tags": ["Book"],
+        "tags": [
+          "Book"
+        ],
         "summary": "Add book's review",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
             "name": "bookId",
             "description": "Book's id",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string",
+              "minimum": 1
+            }
           }
         ],
         "requestBody": {
@@ -292,9 +376,15 @@
     },
     "/planning": {
       "post": {
-        "tags": ["Planning"],
+        "tags": [
+          "Planning"
+        ],
         "summary": "Start planning",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [],
         "requestBody": {
           "description": "Planning's object",
@@ -333,9 +423,15 @@
         }
       },
       "patch": {
-        "tags": ["Planning"],
+        "tags": [
+          "Planning"
+        ],
         "summary": "Add read pages to the planning",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [],
         "requestBody": {
           "description": "Pages object",
@@ -374,9 +470,15 @@
         }
       },
       "get": {
-        "tags": ["Planning"],
+        "tags": [
+          "Planning"
+        ],
         "summary": "Load current planning",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -405,10 +507,16 @@
       }
     },
     "/user/books": {
-      "post": {
-        "tags": ["User"],
+      "get": {
+        "tags": [
+          "User"
+        ],
         "summary": "Get user email and books",
-        "security": [{ "Bearer": [] }],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -416,7 +524,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetBooks&Email"
+                  "$ref": "#/components/schemas/GetBooksAndEmail"
                 }
               }
             }
@@ -440,7 +548,11 @@
   "components": {
     "schemas": {
       "RegistrationRequest": {
-        "required": ["name", "email", "password"],
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -482,7 +594,10 @@
         }
       },
       "LoginRequest": {
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -703,7 +818,12 @@
         }
       },
       "AddBookRequest": {
-        "required": ["title", "author", "publishYear", "totalPages"],
+        "required": [
+          "title",
+          "author",
+          "publishYear",
+          "totalPages"
+        ],
         "type": "object",
         "properties": {
           "title": {
@@ -725,7 +845,7 @@
             "example": 1643,
             "description": "Book's publish year"
           },
-          "totalPages": {
+          "pagesTotal": {
             "type": "integer",
             "example": 110,
             "description": "Book's total amount of pages",
@@ -752,7 +872,7 @@
             "example": 1643,
             "description": "Book's publish year"
           },
-          "totalPages": {
+          "pagesTotal": {
             "type": "integer",
             "example": 110,
             "description": "Book's total amount of pages"
@@ -774,7 +894,10 @@
         }
       },
       "BookReviewRequest": {
-        "required": ["rating", "feedback"],
+        "required": [
+          "rating",
+          "feedback"
+        ],
         "type": "object",
         "properties": {
           "rating": {
@@ -788,7 +911,7 @@
             "type": "string",
             "example": "Really good book",
             "description": "Book's feedback",
-            "minLegth": 1,
+            "minLength": 1,
             "maxLength": 3000
           }
         }
@@ -845,7 +968,11 @@
         }
       },
       "AddPlanningRequest": {
-        "required": ["startDate", "endDate", "books"],
+        "required": [
+          "startDate",
+          "endDate",
+          "books"
+        ],
         "type": "object",
         "properties": {
           "startDate": {
@@ -864,7 +991,9 @@
               "type": "string",
               "description": "id of the book you want to add to planning"
             },
-            "example": ["507f1f77bcf86cd799439013"]
+            "example": [
+              "507f1f77bcf86cd799439013"
+            ]
           }
         }
       },
@@ -968,7 +1097,9 @@
         }
       },
       "ReadPagesRequest": {
-        "required": ["pages"],
+        "required": [
+          "pages"
+        ],
         "type": "object",
         "properties": {
           "pages": {
@@ -1036,41 +1167,45 @@
               "books": {
                 "type": "array",
                 "items": {
-                  "type": "string",
-                  "description": "Book's id",
-                  "example": "507f1f77bcf86cd799439013"
-                },
-
-                "duration": {
-                  "type": "integer",
-                  "description": "Duration of planning (in days)",
-                  "example": 5
-                },
-                "pagesPerDay": {
-                  "type": "integer",
-                  "description": "Amount of pages needed to be read each day",
-                  "example": 2
-                },
-                "stats": {
                   "type": "object",
                   "properties": {
-                    "date": {
+                    "_id": {
                       "type": "string",
-                      "description": "Planning period day date",
-                      "example": "2021-01-06"
+                      "description": "Book's id",
+                      "example": "507f1f77bcf86cd799439013"
                     },
-                    "pagesCount": {
-                      "type": "string",
-                      "description": "Amount of pages read on this day",
-                      "example": 35
+                    "duration": {
+                      "type": "integer",
+                      "description": "Duration of planning (in days)",
+                      "example": 5
+                    },
+                    "pagesPerDay": {
+                      "type": "integer",
+                      "description": "Amount of pages needed to be read each day",
+                      "example": 2
+                    },
+                    "stats": {
+                      "type": "object",
+                      "properties": {
+                        "date": {
+                          "type": "string",
+                          "description": "Planning period day date",
+                          "example": "2021-01-06"
+                        },
+                        "pagesCount": {
+                          "type": "string",
+                          "description": "Amount of pages read on this day",
+                          "example": 35
+                        }
+                      }
                     }
                   }
-                },
-                "_id": {
-                  "type": "string",
-                  "description": "Planning id",
-                  "example": "507f1f77bcf86cd799439014"
                 }
+              },
+              "_id": {
+                "type": "string",
+                "description": "Planning id",
+                "example": "507f1f77bcf86cd799439014"
               }
             }
           }
@@ -1175,7 +1310,7 @@
           }
         }
       },
-      "GetBooks&Email": {
+      "GetBooksAndEmail": {
         "type": "object",
         "properties": {
           "name": {

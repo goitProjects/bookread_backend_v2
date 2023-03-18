@@ -16,7 +16,7 @@ export default class Server {
   constructor() {
     this.app = express();
   }
-
+ 
   async start() {
     this.initMiddlewares();
     await this.initDbConnection();
