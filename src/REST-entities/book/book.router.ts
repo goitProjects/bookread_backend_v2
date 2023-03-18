@@ -4,7 +4,7 @@ import Joi from "joi";
 import tryCatchWrapper from "../../helpers/function-helpers/try-catch-wrapper";
 import validate from "../../helpers/function-helpers/validate";
 import { authorize } from "./../../auth/auth.controller";
-import { addBook, addReview } from "./book.controller";
+import { delBook, addBook, addReview } from "./book.controller";
 
 const addBookSchema = Joi.object({
   title: Joi.string().min(1).max(254).required(),
@@ -57,6 +57,12 @@ router.patch(
   validate(bookIdSchema, "params"),
   validate(addBookReviewSchema),
   tryCatchWrapper(addReview)
+);
+router.delete(
+  "/:bookId",
+  tryCatchWrapper(authorize),
+  validate(bookIdSchema, "params"),
+  tryCatchWrapper(delBook)
 );
 
 export default router;

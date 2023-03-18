@@ -44,7 +44,7 @@ export const login = async (
   next: NextFunction
 ) => {
   const { email, password } = req.body;
-  return UserModel.findOne({ email })
+  return await UserModel.findOne({ email })
     .populate("books")
     .exec(async (err, data) => {
       if (err) {
