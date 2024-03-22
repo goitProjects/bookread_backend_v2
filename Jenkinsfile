@@ -41,7 +41,7 @@ node("all-biulds"){
     
     stage('Clone Git Repo') {
         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-            git branch: 'main', credentialsId: 'github-goitProjects', url: 'git@github.com:goitProjects/bookread_backend_v2.git'
+            git branch: 'main', credentialsId: 'pasha-goitacad-ssh', url: 'git@github.com:goitProjects/bookread_backend_v2.git'
         }
     }
     
